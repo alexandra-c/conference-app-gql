@@ -3,8 +3,8 @@ const { SQLDataSource } = require('../../utils/sqlDataSource')
 class ConferenceDb extends SQLDataSource {
   generateWhereClause(queryBuilder, filters = {}) {
     const { startDate, endDate } = filters
-    if (startDate) queryBuilder.andWHere('StartDate', '>=', startDate)
-    if (endDate) queryBuilder.andWHere('StartDate', '<=', endDate)
+    if (startDate) queryBuilder.andWhere('StartDate', '>=', startDate)
+    if (endDate) queryBuilder.andWhere('StartDate', '<=', endDate)
   }
 
   async getConferenceList(pager, filters) {
