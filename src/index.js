@@ -49,6 +49,7 @@ const server = new ApolloServer({
     } else {
       const { token, dbInstance, externalUser, correlationId, request, requestSpan } = ctx
       return {
+        ceVreauEu: 'Hello World! 🎃 This is coming from GraphQL server ✈',
         token,
         dbInstance,
         dataLoaders: getDataLoaders(dbInstance),
