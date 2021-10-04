@@ -20,7 +20,7 @@ const conferenceResolvers = {
   },
   Conference: {
     type: async ({ conferenceTypeId }, _params, { dataLoaders }, _info) => {
-      const conferenceType = await dataLoaders.conferenceTypeById.load(conferenceTypeId)
+      const conferenceType = conferenceTypeId && (await dataLoaders.conferenceTypeById.load(conferenceTypeId))
       return conferenceType
     },
     category: async ({ categoryId }, _params, { dataLoaders }, _info) => {
@@ -58,8 +58,14 @@ const conferenceResolvers = {
     attend: async (_parent, { input }, { dataSources }, _info) => {
       const updateInput = { ...input, statusId: status.Attended }
       const statusId = await dataSources.conferenceDb.updateConferenceXAttendee(updateInput)
-
-      return statusId ? randomCharacters(10) : null
+      const suggestedConferences = await dataSources.conferenceApi.getConferenceSuggestions(input)
+      const code = statusId ? randomCharacters(10) : null
+      return { suggestedConferences, code }
+    },
+    withdraw: async (_parent, { input }, { dataSources }, _info) => {
+      const updateInput = { ...input, statusId: status.Withdrawn }
+      const statusId = await dataSources.conferenceDb.updateConferenceXAttendee(updateInput)
+      return statusId
     }
   }
 }
